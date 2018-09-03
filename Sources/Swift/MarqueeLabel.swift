@@ -344,7 +344,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             return _homeAnimationDelay ?? animationDelay
         }
         set {
-            _homeAnimationDelay = homeAnimationDelay
+            _homeAnimationDelay = newValue
         }
     }
     
@@ -353,7 +353,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             return _endAnimationDelay ?? animationDelay
         }
         set {
-            _endAnimationDelay = endAnimationDelay
+            _endAnimationDelay = newValue
         }
     }
     
