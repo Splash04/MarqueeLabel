@@ -336,6 +336,26 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      */
     @IBInspectable open var animationDelay: CGFloat = 1.0
     
+    private var _homeAnimationDelay: CGFloat? = nil
+    private var _endAnimationDelay: CGFloat? = nil
+    
+    @IBInspectable open var homeAnimationDelay: CGFloat {
+        get {
+            return _homeAnimationDelay ?? animationDelay
+        }
+        set {
+            _homeAnimationDelay = homeAnimationDelay
+        }
+    }
+    
+    @IBInspectable open var endAnimationDelay: CGFloat = 1.0 {
+        get {
+            return _endAnimationDelay ?? animationDelay
+        }
+        set {
+            _endAnimationDelay
+        }
+    }
     
     /** The read-only/computed duration of the scroll animation (not including delay).
      
@@ -640,7 +660,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             
             sequence = scrollSequence ?? [
                 ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),                   // Starting point, at home, with trailing fade
-                ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),        // Delay at home, maintaining fade state
+                ScrollStep(timeStep: homeAnimationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
                 FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                          // 0.2 sec after scroll start, fade leading edge in as well
                 FadeStep(timeStep: (startFadeTime - animationDuration),                             // Maintain fade state until just before reaching end of scroll animation
                          edgeFades: [.leading, .trailing]),
@@ -676,12 +696,12 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             if (type == .leftRight || type == .rightLeft) {
                 sequence = scrollSequence ?? [
                     ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),               // Starting point, at home, with trailing fade
-                    ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
+                    ScrollStep(timeStep: homeAnimationDelay, position: .home, edgeFades: .trailing),// Delay at home, maintaining fade state
                     FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade leading edge in as well
                     FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
                     ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
                         position: .away, edgeFades: .leading),
-                    ScrollStep(timeStep: animationDelay, position: .away, edgeFades: .leading),     // Delay at away, maintaining fade state (leading only)
+                    ScrollStep(timeStep: endAnimationDelay, position: .away, edgeFades: .leading),  // Delay at away, maintaining fade state (leading only)
                     FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade trailing edge back in as well
                     FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching home position
                     ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Ending point, back at home, with only trailing fade
@@ -690,12 +710,12 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             } else { // .left or .right
                 sequence = scrollSequence ?? [
                     ScrollStep(timeStep: 0.0, position: .home, edgeFades: .trailing),               // Starting point, at home, with trailing fade
-                    ScrollStep(timeStep: animationDelay, position: .home, edgeFades: .trailing),    // Delay at home, maintaining fade state
+                    ScrollStep(timeStep: homeAnimationDelay, position: .home, edgeFades: .trailing),// Delay at home, maintaining fade state
                     FadeStep(timeStep: 0.2, edgeFades: [.leading, .trailing]),                      // 0.2 sec after delay ends, fade leading edge in as well
                     FadeStep(timeStep: -0.2, edgeFades: [.leading, .trailing]),                     // Maintain fade state until 0.2 sec before reaching away position
                     ScrollStep(timeStep: animationDuration, timingFunction: animationCurve,         // Away position, using animationCurve transition, with only leading edge faded in
                         position: .away, edgeFades: .leading),
-                    ScrollStep(timeStep: animationDelay, position: .away, edgeFades: .leading),     // "Delay" at away, maintaining fade state
+                    ScrollStep(timeStep: endAnimationDelay, position: .away, edgeFades: .leading),  // "Delay" at away, maintaining fade state
                 ]
             }
         }
