@@ -348,12 +348,12 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    @IBInspectable open var endAnimationDelay: CGFloat = 1.0 {
+    @IBInspectable open var endAnimationDelay: CGFloat {
         get {
             return _endAnimationDelay ?? animationDelay
         }
         set {
-            _endAnimationDelay
+            _endAnimationDelay = endAnimationDelay
         }
     }
     
