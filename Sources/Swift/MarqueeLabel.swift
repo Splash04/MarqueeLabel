@@ -567,7 +567,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         updateAndScroll(true)
     }
     
-    private func updateAndScroll(_ shouldBeginScroll: Bool) {
+    private func updateAndScroll(_ shouldBeginScroll: Bool, forceBeginScroll: Bool = false) {
         // Check if scrolling can occur
         if !labelReadyForScroll() {
             return
@@ -705,7 +705,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Configure gradient for current condition
         applyGradientMask(fadeLength, animated: !self.labelize)
         
-        if !tapToScroll && !holdScrolling && shouldBeginScroll {
+        if (!tapToScroll && !holdScrolling && shouldBeginScroll) || forceBeginScroll {
             beginScroll(sequence)
         }
     }
@@ -1332,7 +1332,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     
     @objc public func labelWasTapped(_ recognizer: UIGestureRecognizer) {
         if labelShouldScroll() && !awayFromHome {
-            updateAndScroll()
+            updateAndScroll(true, forceBeginScroll: true)
         }
     }
     
