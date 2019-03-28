@@ -725,7 +725,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Configure gradient for current condition
         applyGradientMask(fadeLength, animated: !self.labelize)
-        
+
         if overrideHold || (!holdScrolling && !overrideHold) || forceBeginScroll {
             beginScroll(sequence)
         }
