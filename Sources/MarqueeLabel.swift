@@ -1153,7 +1153,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    open func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if let setupAnim = anim as? GradientSetupAnimation {
             if let finalColors = setupAnim.toValue as? [CGColor] {
                 maskLayer?.colors = finalColors
