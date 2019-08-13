@@ -42,14 +42,21 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      Given the nature of how text direction works, the options for the `type` property require specific text alignments
      and will set the textAlignment property accordingly.
      
-     - `LeftRight` and `Left` types are ONLY compatible with a label text alignment of `NSTextAlignmentLeft`.
-     - `RightLeft` and `Right` types are ONLY compatible with a label text alignment of `NSTextAlignmentRight`.
-     - `Continuous` does not require a text alignment (it is effectively centered).
-     - `ContinuousReverse` does not require a text alignment (it is effectively centered).
+     - `LeftRight` and `Left` types are ONLY compatible with a label text alignment of `NSTextAlignment.left`.
+     - `RightLeft` and `Right` types are ONLY compatible with a label text alignment of `NSTextAlignment.right`.
+     - `Continuous` and `ContinuousReverse` allow the use of `NSTextAlignment.left`, `.right`, or `.center` alignments,
+        however the text alignment only has an effect when label text is short enough that scrolling is not required.
+        When scrolling, the labels are effectively center-aligned.
      
      Defaults to `Continuous`.
      
+     - Note: Note that any `leadingBuffer` value will affect the text alignment location relative to the frame position,
+     including  with `.center` alignment, where the center alignment location will be shifted left (for `.continuous`) or
+     right (for `.continuousReverse`) by one-half (1/2) the `.leadingBuffer` amount. Use the `.trailingBuffer` property to
+     add a buffer between text "loops" without affecting alignment location.
+     
      - SeeAlso: textAlignment
+     - SeeAlso: leadingBuffer
      */
     open var type: MarqueeType = .continuous {
         didSet {
@@ -238,7 +245,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    @available(*, deprecated : 2.6, message : "Use speed property instead")
+    @available(*, deprecated, message: "Use speed property instead")
     @IBInspectable open var scrollDuration: CGFloat {
         get {
             switch speed {
@@ -251,7 +258,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
-    @available(*, deprecated : 2.6, message : "Use speed property instead")
+    @available(*, deprecated, message : "Use speed property instead")
     @IBInspectable open var scrollRate: CGFloat {
         get {
             switch speed {
@@ -263,6 +270,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             speed = .rate(newValue)
         }
     }
+
     
     /**
      A buffer (offset) between the leading edge of the label text and the label frame.
@@ -1276,7 +1284,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
      
      - SeeAlso: restartLabel
      */
-    @available(*, deprecated : 3.1.6, message : "Use the shutdownLabel function instead")
+    @available(*, deprecated, message : "Use the shutdownLabel function instead")
     public func resetLabel() {
         returnLabelToHome()
         homeLabelFrame = CGRect.null
