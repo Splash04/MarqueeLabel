@@ -523,7 +523,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         // Configure self
         super.clipsToBounds = true
-        super.numberOfLines = 1
         
         // Add notification observers
         // Custom class notifications
