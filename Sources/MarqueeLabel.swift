@@ -1532,14 +1532,27 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    /**
+     The maximum number of lines to use for rendering text.
+     
+     For supporting scrolling effect value should be equal to 1.
+     */
     override open var numberOfLines: Int {
         get {
-            return super.numberOfLines
+            return sublabel.numberOfLines
         }
         
         set {
-            // By the nature of MarqueeLabel, this is 1
-            super.numberOfLines = 1
+            if sublabel.numberOfLines == newValue {
+                return
+            }
+            sublabel.numberOfLines = newValue
+            updateAndScroll()
+            super.numberOfLines = newValue
+            // By the nature of MarqueeLabel, numberOfLines should be equal to 1
+            if newValue != 1 {
+                labelize = true
+            }
         }
     }
     
