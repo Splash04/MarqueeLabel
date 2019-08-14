@@ -130,6 +130,12 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         }
     }
     
+    private var isScrollingEnable: Bool {
+        get {
+            return numberOfLines == 1 && !labelize
+        }
+    }
+    
     /**
      A boolean property that sets whether the `MarqueeLabel` should hold (prevent) automatic label scrolling.
      
@@ -146,7 +152,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     @IBInspectable open var holdScrolling: Bool = false {
         didSet {
             if holdScrolling != oldValue {
-                if oldValue == true && !(awayFromHome || labelize ) && labelShouldScroll() {
+                if oldValue == true && !(awayFromHome || isScrollingEnable ) && labelShouldScroll() {
                     updateAndScroll()
                 }
             }
@@ -733,7 +739,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         
         // Configure gradient for current condition
-        applyGradientMask(fadeLength, animated: !self.labelize)
+        applyGradientMask(fadeLength, animated: !self.isScrollingEnable)
 
         if overrideHold || (!holdScrolling && !overrideHold) || forceBeginScroll {
             beginScroll(sequence)
@@ -783,7 +789,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Check if the label string fits
         let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
         let animationHasDuration = speed.value > 0.0
-        return (!labelize && labelTooLarge && animationHasDuration)
+        return (!isScrollingEnable && labelTooLarge && animationHasDuration)
     }
     
     private func labelReadyForScroll() -> Bool {
@@ -1550,10 +1556,6 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
             sublabel.numberOfLines = newValue
             updateAndScroll()
             super.numberOfLines = newValue
-            // By the nature of MarqueeLabel, numberOfLines should be equal to 1
-            if newValue != 1 {
-                labelize = true
-            }
         }
     }
     
