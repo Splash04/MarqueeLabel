@@ -152,7 +152,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     @IBInspectable open var holdScrolling: Bool = false {
         didSet {
             if holdScrolling != oldValue {
-                if oldValue == true && !(awayFromHome || isScrollingEnable ) && labelShouldScroll() {
+                if oldValue == true && !(awayFromHome || !isScrollingEnable ) && labelShouldScroll() {
                     updateAndScroll()
                 }
             }
@@ -739,7 +739,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         
         
         // Configure gradient for current condition
-        applyGradientMask(fadeLength, animated: !self.isScrollingEnable)
+        applyGradientMask(fadeLength, animated: isScrollingEnable)
 
         if overrideHold || (!holdScrolling && !overrideHold) || forceBeginScroll {
             beginScroll(sequence)
@@ -789,7 +789,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         // Check if the label string fits
         let labelTooLarge = (sublabelSize().width + leadingBuffer) > self.bounds.size.width + CGFloat.ulpOfOne
         let animationHasDuration = speed.value > 0.0
-        return (!isScrollingEnable && labelTooLarge && animationHasDuration)
+        return (isScrollingEnable && labelTooLarge && animationHasDuration)
     }
     
     private func labelReadyForScroll() -> Bool {
