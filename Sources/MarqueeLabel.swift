@@ -1196,6 +1196,10 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     fileprivate var scrollCompletionBlock: MLAnimationCompletionBlock?
     
     override open func draw(_ layer: CALayer, in ctx: CGContext) {
+        sublabel.isHidden = !isScrollingEnable
+        if !isScrollingEnable {
+            super.draw(layer, in: ctx)
+        }
         // Do NOT call super, to prevent UILabel superclass from drawing into context
         // Label drawing is handled by sublabel and CAReplicatorLayer layer class
         
