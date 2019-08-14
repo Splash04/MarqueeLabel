@@ -1595,6 +1595,9 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
     }
     
     override open var intrinsicContentSize: CGSize {
+        guard isScrollingEnable else {
+            return super.intrinsicContentSize
+        }
         var content = sublabel.intrinsicContentSize
         content.width += leadingBuffer
         return content
