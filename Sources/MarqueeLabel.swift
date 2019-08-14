@@ -561,6 +561,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
         sublabel.backgroundColor = super.backgroundColor ?? UIColor.clear
         sublabel.shadowColor = super.shadowColor
         sublabel.shadowOffset = super.shadowOffset
+        sublabel.numberOfLines = super.numberOfLines
         for prop in properties {
             let value = super.value(forKey: prop)
             sublabel.setValue(value, forKeyPath: prop)
